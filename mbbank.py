@@ -64,29 +64,29 @@ async def login(user,password):
                         url='https://vision.googleapis.com/v1/images:annotate?key=AIzaSyAV-SXt0qiF5aHdn-Zgcl4Gr61_gxx28qs'
                         data={"requests":[{"image":{"source":{"imageUri":urlFile}},"features":[{"type":"DOCUMENT_TEXT_DETECTION"}]}]}
                         async with session.post(url,headers={'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0','Referer':'https://brandfolder.com/'},json=data) as res:
-                        print(res.status)
-                        if res.status<400:
-                            js=await res.json()
-                            print(js)
-                            text=js['responses'][0]['fullTextAnnotation']['text'] 
-                            captcha=text.strip().replace(' ','')
-                            data={"userId":user,"password":password,"captcha":captcha,"ibAuthen2faString":"d94f855ee10ccd70171ce81c879e3643","sessionId":None,"refNo":"59f482789f35c9b1d2c7ca80516043ad-2024050710134545","deviceIdCommon":deviceId}
-                            #print(captcha)
-                            async with session.post('https://online.mbbank.com.vn/api/retail_web/internetbanking/v2.0/doLogin',headers=headers,json=data) as res:
-                            js=(await res.json())
-                            #print(js)
-                            if res.status<400 and js['result']['ok']==True:
-                                stop=True
-                                sessionId=js['sessionId']
-                                userId=js['cust']['userId']
-                                cards=js['cust']['cardList']
-                                for i,item in enumerate(cards):
-                                if i==len(cards)-1:
-                                    accNo=cards[item]['acctNo']
-                                headers['RefNo']=userId+"-"+ref
-                                print(user+' login success')
-                                return {'headers':headers,'sessionId':sessionId,'userId':userId,'cards':cards,'deviceId':deviceId}
-                            print(user,'Trying re-login...')
+                            print(res.status)
+                            if res.status<400:
+                                js=await res.json()
+                                print(js)
+                                text=js['responses'][0]['fullTextAnnotation']['text'] 
+                                captcha=text.strip().replace(' ','')
+                                data={"userId":user,"password":password,"captcha":captcha,"ibAuthen2faString":"d94f855ee10ccd70171ce81c879e3643","sessionId":None,"refNo":"59f482789f35c9b1d2c7ca80516043ad-2024050710134545","deviceIdCommon":deviceId}
+                                #print(captcha)
+                                async with session.post('https://online.mbbank.com.vn/api/retail_web/internetbanking/v2.0/doLogin',headers=headers,json=data) as res:
+                                    js=(await res.json())
+                                    #print(js)
+                                    if res.status<400 and js['result']['ok']==True:
+                                        stop=True
+                                        sessionId=js['sessionId']
+                                        userId=js['cust']['userId']
+                                        cards=js['cust']['cardList']
+                                        for i,item in enumerate(cards):
+                                            if i==len(cards)-1:
+                                                accNo=cards[item]['acctNo']
+                                        headers['RefNo']=userId+"-"+ref
+                                        print(user+' login success')
+                                        return {'headers':headers,'sessionId':sessionId,'userId':userId,'cards':cards,'deviceId':deviceId}
+                                    print(user,'Trying re-login...')
     except:
       pass
 
