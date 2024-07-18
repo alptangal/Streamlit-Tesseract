@@ -35,7 +35,6 @@ async def login(user,password):
       }
       async with aiohttp.ClientSession(cookie_jar=aiohttp.CookieJar()) as session:
         async with session.post(url,headers=headers,json=data) as res:
-          
             js=await res.json()
             imgdata = base64.b64decode(js['imageString'])
             filename = 'captcha.jpg'  # I assume you have a way of picking unique filenames
@@ -45,6 +44,7 @@ async def login(user,password):
 
             # Perform OCR using PyTesseract
             text = pytesseract.image_to_string(image)
+            stop=True
             return text
             url='https://tmpfiles.org/'
             async with session.get(url,headers=headers) as res: 
