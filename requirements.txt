@@ -3,6 +3,15 @@ streamlit
 streamlit-cropper
 opencv-python-headless
 pytesseract
+websockets
+requests
+bs4
+discord
+aiohttp
+msgpack
+flask
+httpx
+
 #pdf2image
 #scipy
 # pillow
